@@ -2,6 +2,7 @@ package com.example.sortingappkotlin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import com.example.sortingappkotlin.databinding.ActivityMainBinding
 import kotlin.random.Random
 
@@ -11,6 +12,26 @@ class MainActivity : AppCompatActivity() {
     private var list1=Array<String>(25){ ""}
     private var list2=Array<String>(25){ ""}
     private var counterSort=0
+    private val countdownTimer= object: CountDownTimer(25000,1000) {
+        override fun onTick(millisUntilFinished: Long) {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayout2,FragmentSort(bubbleSort(list2,counterSort),counterSort,R.color.green)).commit()
+
+            }
+
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayout1,FragmentSort(insertSort(list1,counterSort),counterSort,R.color.yellow)).commit()
+
+            }
+            counterSort++
+
+        }
+
+        override fun onFinish() {
+            counterSort=0
+        }
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
@@ -47,9 +68,9 @@ class MainActivity : AppCompatActivity() {
             if (counterSort>24) {
                 return@setOnClickListener
             }
+            countdownTimer.start()
 
-
-            supportFragmentManager.beginTransaction().apply {
+            /*supportFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayout2,FragmentSort(bubbleSort(list2,counterSort),counterSort,R.color.green)).commit()
 
             }
@@ -58,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 replace(R.id.frameLayout1,FragmentSort(insertSort(list1,counterSort),counterSort,R.color.yellow)).commit()
 
             }
-            counterSort++
+            counterSort++*/
 
         }
     }
